@@ -55,17 +55,21 @@ function createProject(args) {
 
   fs.writeFileSync(`${dir}/package.json`, parseTemplate('./resources/package.ejs', args));
   fs.writeFileSync(`${dir}/.editorconfig`, parseTemplate('./resources/.editorconfig.ejs', args));
-  fs.writeFileSync(`${srcPath}/index.js`, parseTemplate('./resources/index.ejs', args));  
   fs.writeFileSync(`${publicPath}/index.html`, parseTemplate('./resources/public/index.ejs', args));  
 
   if (args.type === TYPE.APP) {
     fs.writeFileSync(`${dir}/webpack.config.js`, parseTemplate('./resources/webpack.config.ejs', args));  
   }
 
-  if (args.lang === LANG.TYPESCRIPT) {
-    fs.writeFileSync(`${dir}/tsconfig.json`, parseTemplate('./resources/tsconfig.ejs', args));  
-  }
-
+	switch(args.lang) {
+		case LANG.TYPESCRIPT:
+			fs.writeFileSync(`${dir}/tsconfig.json`, parseTemplate('./resources/tsconfig.ejs', args));  
+			fs.writeFileSync(`${srcPath}/index.ts`, parseTemplate('./resources/src/index.ejs', args));  
+			break;
+		case LANG.JAVASCRIPT:
+			fs.writeFileSync(`${srcPath}/index.js`, parseTemplate('./resources/src/index.ejs', args));
+			break;
+	}
 }
 
 let args = minimist(process.argv.slice(2));

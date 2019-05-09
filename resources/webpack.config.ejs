@@ -2,16 +2,19 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './index.js',
+  entry: './src/index.<% if (lang === 'typescript') { %>ts<% } %><% if (lang === 'javascript') { %>js<% } %>',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
   module: {
-    rules: [{
-      test: /\.ts$/,
-      loader: 'awesome-typescript-loader'
-    }, {
+		rules: [
+		<% if (lang === 'typescript') { %>
+		{
+			test: /\.ts$/,
+			loader: 'awesome-typescript-loader'
+		},<% } %>
+		{
       test: /\.css$/,
       loader: 'style-loader!css-loader'
     }]
@@ -21,7 +24,7 @@ module.exports = {
       src: path.resolve(__dirname, 'src/'),
       static: path.resolve(__dirname, 'static/')
     },
-    extensions: ['.js', '.ts']
+    extensions: ['.js', <% if (lang === 'typescript') { %>'.ts',<% } %>]
   },
   devtool: 'source-map',
   devServer: {
