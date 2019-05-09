@@ -1,0 +1,17 @@
+{
+	"name": "frontend-scaffolds",
+	"version": "1.0.0",
+	"description": "All in one front-end scaffolds.",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "mnikn",
+	"license": "MIT",
+	"dependencies": {
+		"ejs": "^2.6.1",
+		"lodash": "^4.17.11",
+		"minimist": "^1.2.0"
+	}
+}
