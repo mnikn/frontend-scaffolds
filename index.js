@@ -9,7 +9,8 @@ const LANG = {
 };
 const TYPE = {
   APP: 'app',
-  LIB: 'lib',
+	LIB: 'lib',
+	THREE_D_GAME: '3dgame',
 };
 const FRAMEWORK = {
   NONE: 'none',
@@ -55,19 +56,26 @@ function createProject(args) {
 
   fs.writeFileSync(`${dir}/package.json`, parseTemplate('./resources/package.ejs', args));
   fs.writeFileSync(`${dir}/.editorconfig`, parseTemplate('./resources/.editorconfig.ejs', args));
-  fs.writeFileSync(`${publicPath}/index.html`, parseTemplate('./resources/public/index.ejs', args));  
-
-  if (args.type === TYPE.APP) {
-    fs.writeFileSync(`${dir}/webpack.config.js`, parseTemplate('./resources/webpack.config.ejs', args));  
-  }
+	fs.writeFileSync(`${publicPath}/index.html`, parseTemplate('./resources/public/index.ejs', args));  
+	
+	switch(args.type) {
+		case TYPE.THREE_D_GAME:
+			fs.writeFileSync(`${dir}/webpack.config.js`, parseTemplate('./resources/webpack.config.ejs', args));
+			fs.writeFileSync(`${srcPath}/index`, parseTemplate('./resources/src/game-index.ejs', args));
+			break;
+		case TYPE.APP:
+			fs.writeFileSync(`${dir}/webpack.config.js`, parseTemplate('./resources/webpack.config.ejs', args));
+			fs.writeFileSync(`${srcPath}/index`, parseTemplate('./resources/src/app-index.ejs', args));
+			break;
+	}
 
 	switch(args.lang) {
 		case LANG.TYPESCRIPT:
 			fs.writeFileSync(`${dir}/tsconfig.json`, parseTemplate('./resources/tsconfig.ejs', args));  
-			fs.writeFileSync(`${srcPath}/index.ts`, parseTemplate('./resources/src/index.ejs', args));  
+			fs.renameSync(`${srcPath}/index`, `${srcPath}/index.ts`);
 			break;
 		case LANG.JAVASCRIPT:
-			fs.writeFileSync(`${srcPath}/index.js`, parseTemplate('./resources/src/index.ejs', args));
+			fs.renameSync(`${srcPath}/index`, `${srcPath}/index.js`);
 			break;
 	}
 }
