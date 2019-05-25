@@ -58,6 +58,10 @@ function createProject(args) {
   fs.writeFileSync(`${dir}/package.json`, parseTemplate('./resources/package.ejs', args));
   fs.writeFileSync(`${dir}/.editorconfig`, parseTemplate('./resources/.editorconfig.ejs', args));
 	fs.writeFileSync(`${publicPath}/index.html`, parseTemplate('./resources/public/index.ejs', args));  
+
+	fs.mkdirSync(`${dir}/resources`);
+	fs.writeFileSync(`${dir}/resources/.gitkeep`, '');  
+
 	
 	switch(args.type) {
 		case TYPE.THREE_D_GAME:
@@ -82,11 +86,13 @@ function createProject(args) {
 
 	switch(args.lang) {
 		case LANG.TYPESCRIPT:
-			fs.writeFileSync(`${dir}/tsconfig.json`, parseTemplate('./resources/tsconfig.ejs', args));  
 			fs.renameSync(`${srcPath}/index`, `${srcPath}/index.ts`);
+			fs.writeFileSync(`${dir}/tsconfig.json`, parseTemplate('./resources/tsconfig.ejs', args));  
+			fs.writeFileSync(`${dir}/.eslintrc.js`, parseTemplate('./resources/.eslintrc-ts.ejs', args));  
 			break;
 		case LANG.JAVASCRIPT:
 			fs.renameSync(`${srcPath}/index`, `${srcPath}/index.js`);
+			fs.writeFileSync(`${dir}/.eslintrc.js`, parseTemplate('./resources/.eslintrc-es6.ejs', args));  
 			break;
 	}
 }

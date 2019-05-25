@@ -23,7 +23,7 @@ module.exports = {
   resolve: {
     alias: {
       src: path.resolve(__dirname, 'src/'),
-      static: path.resolve(__dirname, 'static/')
+			resources: path.resolve(__dirname, 'resources/')
     },
     extensions: ['.js', <% if (lang === 'typescript') { %>'.ts',<% } %>]
   },
