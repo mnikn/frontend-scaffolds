@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -34,6 +35,10 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
       template: "./<% if (type === 'app') { %>public<% } %><% if (type === 'component' || type === 'lib') { %>examples<% } %>/index.html"
-    })
+		}),
+		new webpack.ProvidePlugin({
+			$: 'jquery',
+			_: 'lodash',
+		}),
   ]
 };
