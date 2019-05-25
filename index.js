@@ -8,8 +8,9 @@ const LANG = {
   JAVASCRIPT : 'javascript',
 };
 const TYPE = {
-  APP: 'app',
+	APP: 'app',
 	LIB: 'lib',
+	COMPONENT: 'component',
 	THREE_D_GAME: '3dgame',
 };
 const FRAMEWORK = {
@@ -48,7 +49,7 @@ function createProject(args) {
   const srcPath = `${dir}/src`;
   if (!fs.existsSync(srcPath)) {
     fs.mkdirSync(srcPath);
-  }
+	}
   const publicPath = `${dir}/public`;
   if (!fs.existsSync(publicPath)) {
     fs.mkdirSync(publicPath);
@@ -66,6 +67,16 @@ function createProject(args) {
 		case TYPE.APP:
 			fs.writeFileSync(`${dir}/webpack.config.js`, parseTemplate('./resources/webpack.config.ejs', args));
 			fs.writeFileSync(`${srcPath}/index`, parseTemplate('./resources/src/app-index.ejs', args));
+			break;
+		case TYPE.COMPONENT:
+			fs.writeFileSync(`${dir}/webpack.config.js`, parseTemplate('./resources/webpack.config.ejs', args));
+			fs.writeFileSync(`${srcPath}/index`, parseTemplate('./resources/src/component-index.ejs', args));
+			const examplesPath = `${dir}/examples`;
+			if (!fs.existsSync(examplesPath)) {
+				fs.mkdirSync(examplesPath);
+				fs.writeFileSync(`${examplesPath}/index.html`, parseTemplate('./resources/examples/index.ejs', args));
+				fs.writeFileSync(`${examplesPath}/app.js`, parseTemplate('./resources/examples/app.ejs', args));
+			}
 			break;
 	}
 

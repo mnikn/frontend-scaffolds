@@ -1,0 +1,24 @@
+export default class ExampleContainer {
+	<% if (lang === 'typescript') { %>private _parentElemSelector: string;<% } %>
+
+	constructor(parentElemSelector<% if (lang === 'typescript') { %>:string<% } %>) {
+		this._parentElemSelector = parentElemSelector;
+		this.init();
+	}
+
+	init() {
+		// todo: write your component here
+		const elem = document.createElement('span');
+		elem.innerText = 'You component is initialized.';
+		document.querySelector(this._parentElemSelector).append(elem);
+	}
+
+	destory() {
+		document.querySelector(this._parentElemSelector).remove();
+	}
+
+	rerender() {
+		this.destory();
+		this.init();
+	}
+}

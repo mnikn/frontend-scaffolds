@@ -2,10 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.<% if (lang === 'typescript') { %>ts<% } %><% if (lang === 'javascript') { %>js<% } %>',
+  entry: <% if (type === 'component' || type === 'lib') { %>'./examples/app.js'<% } else { %>'./src/index.<% if (lang === 'typescript') { %>ts<% } %><% if (lang === 'javascript') { %>js<% } %>'<% } %>,
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'examples-dist')
   },
   module: {
 		rules: [
@@ -28,12 +28,12 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'examples-dist'),
     compress: true
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./public/index.html"
+	plugins: [
+		new HtmlWebpackPlugin({
+      template: "./<% if (type === 'app') { %>public<% } %><% if (type === 'component' || type === 'lib') { %>examples<% } %>/index.html"
     })
   ]
 };
